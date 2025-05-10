@@ -1,6 +1,11 @@
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.*;
+import javax.xml.XMLConstants;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import java.nio.file.*;
 import java.util.ArrayList;
@@ -12,7 +17,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
+import java.net.URL;
     public class BetterMake {
         public static List<Path> findCFiles(String rootDir) throws IOException {
         return Files.walk(Paths.get(rootDir))
@@ -69,6 +74,15 @@ import java.io.InputStreamReader;
         HashMap<String, String> data = new HashMap<>();
         try {
             File inputFile = new File("mk.xml");  // Your XML filename here
+            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            URL schemaLocation = new URL("https://raw.githubusercontent.com/Wdboyes13/BetterMake/refs/heads/main/BMF.xsd");
+            Schema schema = factory.newSchema(schemaLocation);
+
+            // Create validator
+            Validator validator = schema.newValidator();
+
+            // Validate the XML file
+            validator.validate(new StreamSource(inputFile));
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -132,7 +146,7 @@ import java.io.InputStreamReader;
 
             data.put("OUTF", fileName);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return data;
     }
