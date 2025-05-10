@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URL;
     public class BetterMake {
         public static List<Path> findCFiles(String rootDir) throws IOException {
@@ -75,7 +76,7 @@ import java.net.URL;
         try {
             File inputFile = new File("mk.xml");  // Your XML filename here
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            URL schemaLocation = new URL("https://raw.githubusercontent.com/Wdboyes13/BetterMake/refs/heads/main/BMF.xsd");
+            URL schemaLocation = new URI("https://raw.githubusercontent.com/Wdboyes13/BetterMake/refs/heads/main/BMF.xsd").toURL();
             Schema schema = factory.newSchema(schemaLocation);
 
             // Create validator
