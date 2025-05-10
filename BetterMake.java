@@ -141,6 +141,10 @@ import java.io.InputStreamReader;
         if (data.get("REPO")!=null && !data.get("REPO").isEmpty()) {
             String repo = data.get("REPO");
             if (data.get("MSG")!=null && !data.get("MSG").isEmpty()) msg=data.get("MSG"); else msg="Updated";
+            if (msg.equals("PROMPT")){
+                Scanner inp = new Scanner(System.in);
+                msg = inp.nextLine();
+            }
             String[] cmd = {"bash", "-c", "git add . && git commit -m \"" + msg + "\" && git push " + repo + " main"};
             ProcessBuilder pb = new ProcessBuilder(cmd);
             pb.inheritIO();
